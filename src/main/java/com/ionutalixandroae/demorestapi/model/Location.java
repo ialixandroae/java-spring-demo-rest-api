@@ -31,8 +31,8 @@ public class Location {
     public Map<String, Double> getCoordinates() {
         if (this.locationInfo != null) {
             Map<String, Double> coordinates = new HashMap<>();
-            Double latitude = this.locationInfo.get("feature").get("geometry").get("x").asDouble();
-            Double longitude = this.locationInfo.get("feature").get("geometry").get("y").asDouble();
+            Double latitude = this.locationInfo.get("feature").get("geometry").get("y").asDouble();
+            Double longitude = this.locationInfo.get("feature").get("geometry").get("x").asDouble();
             coordinates.put("latidude", latitude);
             coordinates.put("longitude", longitude);
             return coordinates;
