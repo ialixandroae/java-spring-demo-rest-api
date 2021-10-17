@@ -31,8 +31,8 @@ public class Location {
     public Map<String, Double> getCoordinates() {
         if (this.locationInfo != null) {
             Map<String, Double> coordinates = new HashMap<>();
-            Double latitude = this.locationInfo.get("lat").asDouble();
-            Double longitude = this.locationInfo.get("lon").asDouble();
+            Double latitude = this.locationInfo.get("feature").get("geometry").get("x").asDouble();
+            Double longitude = this.locationInfo.get("feature").get("geometry").get("y").asDouble();
             coordinates.put("latidude", latitude);
             coordinates.put("longitude", longitude);
             return coordinates;
@@ -45,12 +45,13 @@ public class Location {
     }
 
     private JsonNode getLocationInfo(String name) {
-        String urlString = String.format("https://nominatim.openstreetmap.org/search?city=%s&format=json", name);
+        String urlString = String.format("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find?text=%s&f=json", name);
 
         try {
             InputStream stream = new URL(urlString).openStream();
             JsonNode results = new ObjectMapper().readTree(stream);
-            JsonNode bestResult = results.get(0);
+            JsonNode locations = results.get("locations");
+            JsonNode bestResult = locations.get(0);
             return bestResult;
         } catch (Exception e) {
             e.printStackTrace();
